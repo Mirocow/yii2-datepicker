@@ -1,0 +1,35 @@
+{
+  "name": "mattxw/yii2-datepicker",
+  "type": "yii2-extension",
+  "authors": [
+    {
+      "name": "mattxw",
+      "email": "ruswan.wu@outlook.com"
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/mattxw/yii2-datepicker/issues",
+    "source": "https://github.com/mattxw/yii2-datepicker"
+  },
+  "minimum-stability": "dev",
+  "require": {
+    "yiisoft/yii2": "~2.0",
+    "yiisoft/yii2-bootstrap4": "~1.0@dev",
+    "simialbi/yii2-simialbi-base": "^0.2",
+    "npm-asset/bootstrap-datepicker": "~1.8.0"
+  },
+  "require-dev": {
+    "yiisoft/yii2-coding-standards": "~2.0"
+  },
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://asset-packagist.org"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "mattxw\\datepicker\\": ""
+    }
+  }
+}
