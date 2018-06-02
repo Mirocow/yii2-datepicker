@@ -6,32 +6,22 @@ use yii\base\Model;
 use yii\bootstrap4\Html;
 use yii\bootstrap4\Widget;
 use yii\helpers\ArrayHelper;
-use yii\helpers\StringHelper;
 use yii\web\JsExpression;
 
 /**
  * Class DatePicker
  * @package mattxw\datepicker
+ * @property Model $model
+ * @property  string|array $attribute
+ * @property  array $jsOptions Options for BS Datepicker JavaScript
+ * @property  array $inputOptions Options for input element
+ * @property  array $containerOptions Options for input(s) container
  */
 class DatePicker extends Widget
 {
-    /**
-     * @var Model $model
-     * @var string|array $attribute
-     */
     public $model, $attribute;
-
-    /**
-     * @var array $jsOptions Options for BS Datepicker JavaScript
-     */
     public $jsOptions = [];
-    /**
-     * @var array $inputOptions Options for input element
-     */
     public $inputOptions = [];
-    /**
-     * @var array $containerOptions Options for input(s) container
-     */
     public $containerOptions = [];
 
     /**
