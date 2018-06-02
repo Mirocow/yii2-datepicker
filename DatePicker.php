@@ -127,7 +127,6 @@ class DatePicker extends Widget
     private function renderJs()
     {
         $options = json_encode($this->jsOptions);
-        var_dump(date('d/m/Y'));
         return "
             $('#{$this->id}').each(function(i, o) {
                 $(o).datepicker({$options});
