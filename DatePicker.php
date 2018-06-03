@@ -60,34 +60,40 @@ class DatePicker extends Widget
         if (isset($this->containerOptions['class']))
             $class = $this->containerOptions['class'];
         else {
-            // Decide whether to use daterange or datepicker
             if (is_array($this->attribute))
                 $class[] = 'input-daterange';
-            else
-                $class[] = 'input-datepicker';
-
         }
+
+        $input = "";
+        $errors = "";
 
         // Enclose in an array for easier render
-        if (!is_array($this->attribute))
-            $attrArray = [$this->attribute];
-        else
-            $attrArray = $this->attribute;
+        if (is_array($this->attribute)) {
+            // Generate input field for each attribute
+            foreach ($this->attribute as $key => $attr) {
+                $input .= Html::activeInput("text", $this->model, $attr, ArrayHelper::merge([
+                    'value' => $this->model->{$attr},
+                ], $this->inputOptions));
 
-        // Render input for each attribute(s)
-        $input = "";
-        foreach ($attrArray as $key => $attr) {
-            $input .= Html::activeInput("text", $this->model, $attr, ArrayHelper::merge([
-                'value' => $this->model->{$attr},
+                // Add connector if not the last element in array
+                if ($key < count($this->attribute) - 1)
+                    $input .= Html::tag('div', @$this->inputOptions['separator'] ?: "", ['class' => 'input-group-text']);
+            }
+
+            // Enclose in a container so it can be displayed in a linear block
+            $input = Html::tag('div', $input, ArrayHelper::merge([
+                'id' => $this->id,
+                'class' => implode(" ", $class),
+            ], $this->containerOptions));
+        } else
+            // Just generate it with id on the input
+            $input .= Html::activeInput("text", $this->model, $this->attribute, ArrayHelper::merge([
+                'id' => $this->id,
+                'value' => $this->model->{$this->attribute},
             ], $this->inputOptions));
 
-            // Add connector if not the last element in array
-            if ($key < count($attrArray) - 1)
-                $input .= Html::tag('div', @$this->inputOptions['separator'] ?: "", ['class' => 'input-group-text']);
-        }
-
-        $errors = "";
-        foreach ($attrArray as $attr) {
+        // Generate errors for each attribute
+        foreach (is_array($this->attribute) ? $this->attribute : [$this->attribute] as $attr) {
             foreach ($this->model->getErrors($attr) as $error) {
                 $errors .= Html::tag('div', $error, ['class' => 'text-danger']);
             }
@@ -100,15 +106,12 @@ class DatePicker extends Widget
         $this->view->registerJs(new JsExpression($this->renderJs()));
 
         // Return HTMLs
-        return Html::tag('div',
-            // write label if exists
-            (isset($this->containerOptions['label']) ? Html::label($this->containerOptions['label'], null, ['class' => 'd-block w-100']) : "") .
-            $input .
-            Html::tag('div', $errors, ['class' => 'w-100'])
-            , ArrayHelper::merge([
-                'id' => $this->id,
-                'class' => implode(" ", $class),
-            ], $this->containerOptions));
+        return
+            Html::tag('div',
+                // write label if exists
+                (isset($this->containerOptions['label']) ? Html::label($this->containerOptions['label'], null, ['class' => 'd-block w-100']) : "") .
+                $input .
+                Html::tag('div', $errors, ['class' => 'w-100']));
     }
 
     /**
@@ -117,10 +120,13 @@ class DatePicker extends Widget
     private function renderJs()
     {
         $options = json_encode($this->jsOptions);
-        return "
+        if (is_array($this->attribute))
+            return "
             $('#{$this->id}').each(function(i, o) {
                 $(o).datepicker({$options});
             });
         ";
+        else
+            return "$('#{$this->id}').datepicker({$options});";
     }
 }
