@@ -32,7 +32,7 @@ To use this widget for your project, please follow this instruction.
 
 * Below is an example on how to show a simple datepicker to your view
 
-  ```$php
+  ```php
     $model->field('date')->widget(\mattxw\datepicker\DatePicker::class, [
         'jsOptions' => [
             'format' => 'dd/mm/yyyy', // This is optional
@@ -41,7 +41,7 @@ To use this widget for your project, please follow this instruction.
   ```
   
   You can use it to show two input for a date range picker too.
-  ```$php
+  ```php
     \mattxw\datepicker\DatePicker::widget([
         // Both model and attributes are required
         'model' => $model,
